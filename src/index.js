@@ -1,37 +1,6 @@
-import isNode from 'detect-node';
-import pify from 'pify';
+import createRpcCall from './xmlrpc-client';
 
-const clientOptions = {
-  host: 'api.opensubtitles.org',
-  port: 80,
-  path: '/xml-rpc'
-};
-
-const callRpcFn = isNode ?
-  (function() {
-    const client = require('xmlrpc').createClient(clientOptions);
-    return client.methodCall.bind(client);
-  }()) :
-  (function() {
-    var $ = jQuery = require('./bower_components/jquery/jquery.min.js');
-    require('./bower_components/jquery-xmlrpc/jquery.xmlrpc.min.js');
-
-    return function(method, params, cb) {
-      $.xmlrpc({
-        url: 'http://' + clientOptions.host + clientOptions.path,
-        methodName: method,
-        params: params,
-        success: function(response, status, jqXHR) {
-          cb(null, response[0]);
-        },
-        error: function(jqXHR, status, error) {
-          cb(error);
-        }
-      });
-    };
-  })();
-
-const callRpc = pify(callRpcFn);
+const rpcCall = createRpcCall('http://api.opensubtitles.org/xml-rpc');
 
 const Api = function(userAgent, token) {
   this.userAgent = userAgent;
@@ -43,7 +12,7 @@ const Api = function(userAgent, token) {
 };
 
 Api.prototype.getToken = function() {
-  return callRpc('LogIn', ['', '', 'en', this.userAgent])
+  return rpcCall('LogIn', ['', '', 'en', this.userAgent])
     .then(res => {
       if (res.status === '414 Unknown User Agent') {
         throw new Error('Unknown User Agent');
@@ -72,7 +41,7 @@ Api.prototype.searchEpisode = function(query) {
         opts.tag = query.filename;
       }
 
-      return callRpc('SearchSubtitles', [ this.token, [opts] ]);
+      return rpcCall('SearchSubtitles', [ this.token, [opts] ]);
     })
     .then(res => {
       if (typeof res.data === 'undefined') {
