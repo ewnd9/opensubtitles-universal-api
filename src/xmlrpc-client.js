@@ -2,7 +2,6 @@
 
 import { serializeMethodCall } from 'xmlrpc/lib/serializer';
 import Deserializer from 'xmlrpc/lib/deserializer';
-import stream from 'stream';
 import request from 'superagent';
 import isNode from 'detect-node';
 import pify from 'pify';

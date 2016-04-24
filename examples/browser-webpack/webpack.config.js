@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   entry: __dirname + '/index.js',
   module: {

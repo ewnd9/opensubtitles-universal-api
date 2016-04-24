@@ -1,6 +1,9 @@
 import test from 'ava';
+
 import 'babel-core/register';
-import OpenSubtitles from '../src/index';
+import 'babel-polyfill';
+
+import OpenSubtitles from '../../src/index';
 
 test('true', async t => {
   const api = new OpenSubtitles('OSTestUserAgent');

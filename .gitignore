@@ -1,5 +1,5 @@
 /node_modules/
 /dist/
-/test/fixtures/bundle.js
+/examples/browser-webpack/bundle.js
 *.log
 play.js
