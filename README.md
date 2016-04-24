@@ -31,6 +31,8 @@ api.searchEpisode(query)
   });
 ```
 
+:warning: 'OSTestUserAgent' is intended for test usage. Use the [instruction](https://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst) to get your own.
+
 Webpack example is available in [`/examples/browser-webpack`](./examples/browser-webpack)
 
 ## License
