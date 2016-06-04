@@ -21,22 +21,56 @@ Api.prototype.getToken = function() {
       this.token = res.token;
       return this.token;
     });
-},
+};
+
+Api.prototype.search = function(query) {
+  if (query.season && query.episode) {
+    return this.searchEpisode(query);
+  } else {
+    return this.searchMovie(query);
+  }
+};
 
 Api.prototype.searchEpisode = function(query) {
+  return this._search(query, this.episodeFilterFn);
+};
+
+Api.prototype.episodeFilterFn = function(sub, query, imdbId) {
+  return parseInt(sub.SeriesIMDBParent) === parseInt(imdbId) &&
+    sub.SeriesSeason === String(query.season) &&
+    sub.SeriesEpisode === String(query.episode);
+};
+
+Api.prototype.searchMovie = function(query) {
+  return this._search(query, this.movieFilterFn);
+};
+
+Api.prototype.movieFilterFn = function(sub, query, imdbId) {
+  return sub.IDMovieImdb === imdbId;
+};
+
+Api.prototype._search = function(query, filterFn) {
+  const imdbId = query.imdbid.replace('tt', '');
+
   return ((!this.token) ? this.getToken() : Promise.resolve())
     .then(() => {
       const opts = {};
-      opts.sublanguageid = "all";
+      opts.sublanguageid = 'all';
 
       if (query.hash) {
         opts.moviehash = query.hash;
       }
 
       if (!query.filename) {
-        opts.imdbid = query.imdbid.replace("tt", "");
-        opts.season = query.season + '';
-        opts.episode = query.episode + '';
+        opts.imdbid = imdbId;
+
+        if (query.season) {
+          opts.season = String(query.season);
+        }
+
+        if (query.episode) {
+          opts.episode = String(query.episode);
+        }
       } else {
         opts.tag = query.filename;
       }
@@ -54,10 +88,7 @@ Api.prototype.searchEpisode = function(query) {
 
       const subs = res.data
         .filter(sub => {
-          return sub.SubFormat === 'srt' &&
-                 parseInt(sub.SeriesIMDBParent) === parseInt(query.imdbid.replace('tt', '')) &&
-                 sub.SeriesSeason === query.season &&
-                 sub.SeriesEpisode === query.episode;
+          return sub.SubFormat === 'srt' && filterFn(sub, query, imdbId);
         })
         .reduce((total, curr) => {
           const sub = {};

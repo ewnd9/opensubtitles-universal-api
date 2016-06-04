@@ -7,7 +7,7 @@
     "build": "babel -d dist src",
     "build:watch": "babel -w -d dist src",
     "build:webpack": "webpack --config test/fixtures/webpack.config.js",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint 'src/**/*.js'",
     "postpublish": "rm -rf dist",
     "prepublish": "npm run build",
     "prepush": "npm run lint && npm test",
@@ -15,10 +15,11 @@
     "test:browser:watch": "karma start test/browser/karma.conf.js",
     "test:browser": "npm run test:browser:watch -- --single-run",
     "test:node": "ava test/node/**/*.js",
-    "test:node:watch": "npm run test -- --watch"
+    "test:node:watch": "npm run test:node -- --watch"
   },
   "keywords": [
-    ""
+    "opensubtiles",
+    "subtitles"
   ],
   "files": [
     "dist"

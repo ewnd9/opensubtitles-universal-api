@@ -7,11 +7,11 @@ describe('OpenSubtitles', () => {
 
     const query = {
       imdbid: 'tt0411008', // lost abc
-      season: '1',
-      episode: '1'
+      season: 1,
+      episode: 1
     };
 
-    api.searchEpisode(query)
+    api.search(query)
       .then(result => {
         expect(result['en'].length).toBeGreaterThan(0);
         expect(Object.keys(result['en'][0])).toEqual([

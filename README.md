@@ -16,15 +16,25 @@ $ npm install --save opensubtitles-universal-api
 
 ```js
 import OpenSubtitles from 'opensubtitles-universal-api';
-
 const api = new OpenSubtitles('OSTestUserAgent');
-const query = {
+
+const episodeQuery = {
   imdbid: 'tt0411008', // lost-2004 abc
-  season: '1',
-  episode: '1'
+  season: 1,
+  episode: 1
 };
 
-api.searchEpisode(query)
+api.search(episodeQuery)
+  .then(result => {
+    Object.keys(result) //=> ['en', 'ru', ...]
+    Object.keys(result.en[0]) //=> ['url', 'lang', 'downloads', 'score', 'subFilename', 'releaseFilename', 'date', 'encoding'];
+  });
+
+const movieQuery = {
+  imdbid: 'tt0152930' // taxi 1998
+};
+
+api.search(movieQuery)
   .then(result => {
     Object.keys(result) //=> ['en', 'ru', ...]
     Object.keys(result.en[0]) //=> ['url', 'lang', 'downloads', 'score', 'subFilename', 'releaseFilename', 'date', 'encoding'];
