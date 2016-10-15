@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ewnd9/opensubtitles-universal-api.svg?branch=master)](https://travis-ci.org/ewnd9/opensubtitles-universal-api)
 
-Universal API for opensubtitles.org, works both in node and browsers.
+Universal API for opensubtitles.org, works both in Node.js and browsers.
 
 Fork of https://github.com/SlashmanX/OpenSRTJS
 
@@ -41,7 +41,7 @@ api.search(movieQuery)
   });
 ```
 
-:warning: 'OSTestUserAgent' is intended for test usage. Use the [instruction](https://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst) to get your own.
+:warning: 'OSTestUserAgent' is intended only for the test usage. Use the [instruction](https://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst) to get your own token.
 
 Webpack example is available in [`/examples/browser-webpack`](./examples/browser-webpack)
 

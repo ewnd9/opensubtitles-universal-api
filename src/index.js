@@ -46,7 +46,7 @@ Api.prototype.searchMovie = function(query) {
 };
 
 Api.prototype.movieFilterFn = function(sub, query, imdbId) {
-  return sub.IDMovieImdb === imdbId;
+  return parseInt(sub.IDMovieImdb) === parseInt(imdbId);
 };
 
 Api.prototype._search = function(query, filterFn) {

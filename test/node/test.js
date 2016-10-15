@@ -4,7 +4,7 @@ import 'babel-core/register';
 import 'babel-polyfill';
 
 import OpenSubtitles from '../../src/index';
-const api = new OpenSubtitles('OSTestUserAgent');
+const api = new OpenSubtitles('OSTestUserAgentTemp');
 
 const schema = [
   'url',
@@ -33,6 +33,17 @@ test('lost 01x01', async t => {
 test('batman v superman', async t => {
   const query = {
     imdbid: 'tt2975590'
+  };
+
+  const result = await api.search(query);
+
+  t.truthy(result['en'].length > 0);
+  t.deepEqual(Object.keys(result['en'][0]), schema);
+});
+
+test('saving private ryan', async t => {
+  const query = {
+    imdbid: 'tt0120815'
   };
 
   const result = await api.search(query);
