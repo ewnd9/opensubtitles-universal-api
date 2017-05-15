@@ -50,7 +50,6 @@ Api.prototype.movieFilterFn = function(sub, query, imdbId) {
 };
 
 Api.prototype._search = function(query, filterFn) {
-  const imdbId = query.imdbid.replace('tt', '');
 
   return ((!this.token) ? this.getToken() : Promise.resolve())
     .then(() => {
@@ -62,7 +61,14 @@ Api.prototype._search = function(query, filterFn) {
       }
 
       if (!query.filename) {
-        opts.imdbid = imdbId;
+
+        if (query.query) {
+          opts.query = query.query;
+        }
+
+        if (query.imdbid) {
+          opts.imdbid = query.imdbid.replace('tt', '');
+        }
 
         if (query.season) {
           opts.season = String(query.season);
