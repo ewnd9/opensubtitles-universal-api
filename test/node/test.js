@@ -51,3 +51,14 @@ test('saving private ryan', async t => {
   t.truthy(result['en'].length > 0);
   t.deepEqual(Object.keys(result['en'][0]), schema);
 });
+
+test('saving private ryan by query', async t => {
+  const query = {
+    query: 'saving private ryan'
+  };
+
+  const result = await api.search(query);
+
+  t.truthy(result['en'].length > 0);
+  t.deepEqual(Object.keys(result['en'][0]), schema);
+});

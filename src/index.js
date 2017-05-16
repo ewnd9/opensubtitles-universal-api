@@ -36,7 +36,7 @@ Api.prototype.searchEpisode = function(query) {
 };
 
 Api.prototype.episodeFilterFn = function(sub, query, imdbId) {
-  return parseInt(sub.SeriesIMDBParent) === parseInt(imdbId) &&
+  return (!imdbId || parseInt(sub.SeriesIMDBParent) === parseInt(imdbId)) &&
     sub.SeriesSeason === String(query.season) &&
     sub.SeriesEpisode === String(query.episode);
 };
@@ -46,11 +46,11 @@ Api.prototype.searchMovie = function(query) {
 };
 
 Api.prototype.movieFilterFn = function(sub, query, imdbId) {
-  return parseInt(sub.IDMovieImdb) === parseInt(imdbId);
+  return !imdbId || parseInt(sub.IDMovieImdb) === parseInt(imdbId);
 };
 
 Api.prototype._search = function(query, filterFn) {
-  const imdbId = query.imdbid.replace('tt', '');
+  const imdbId = (query.imdbid || '').replace('tt', '');
 
   return ((!this.token) ? this.getToken() : Promise.resolve())
     .then(() => {
@@ -62,7 +62,13 @@ Api.prototype._search = function(query, filterFn) {
       }
 
       if (!query.filename) {
-        opts.imdbid = imdbId;
+        if (imdbId) {
+          opts.imdbid = imdbId;
+        }
+
+        if (query.query) {
+          opts.query = query.query;
+        }
 
         if (query.season) {
           opts.season = String(query.season);
